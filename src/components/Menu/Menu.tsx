@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { 
@@ -7,7 +7,8 @@ import {
   FiSettings,
   FiDollarSign,
   FiPieChart,
-  FiShield
+  FiShield,
+  FiCalendar
 } from 'react-icons/fi';
 
 interface MenuItem {
@@ -24,8 +25,6 @@ interface MenuProps {
 }
 
 const Menu = ({ isOpen }: MenuProps) => {
-  const [openMenus, setOpenMenus] = useState({} as Record<string, boolean>);
-
   const menuItems: MenuItem[] = [
     { 
       title: 'Dashboard',
@@ -56,15 +55,12 @@ const Menu = ({ isOpen }: MenuProps) => {
         { title: 'Account', icon: <FiShield className="w-4 h-4" /> },
         { title: 'Preferences', icon: <FiSettings className="w-4 h-4" /> }
       ]
+    },
+    {
+      title: 'Calendar',
+      icon: <FiCalendar className="w-5 h-5" />
     }
   ];
-
-  const toggleMenu = (title: string) => {
-    setOpenMenus(prev => ({
-      ...prev,
-      [title]: !prev[title]
-    }));
-  };
 
   return (
     <motion.div
@@ -74,10 +70,9 @@ const Menu = ({ isOpen }: MenuProps) => {
     >
       {menuItems.map((item) => (
         <motion.div key={item.title}>
-          <button
-            onClick={() => toggleMenu(item.title)}
+          <Link 
+            to={item.title === 'Calendar' ? '/calendar' : '#'}
             className="w-full p-2 hover:bg-gray-700 dark:hover:bg-gray-800 flex items-center gap-3 rounded-lg transition-all"
-            disabled={!isOpen}
           >
             <div className="text-gray-400">
               {item.icon}
@@ -89,9 +84,9 @@ const Menu = ({ isOpen }: MenuProps) => {
             >
               {item.title}
             </motion.span>
-          </button>
+          </Link>
 
-          {isOpen && item.subItems && openMenus[item.title] && (
+          {isOpen && item.subItems && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}

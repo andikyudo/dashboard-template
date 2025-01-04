@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { MantineProvider } from '@mantine/core';
 import TablePage from './pages/TablePage';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { DndProvider } from 'react-dnd';
@@ -13,6 +14,7 @@ import Profile from './components/Profile/Profile';
 import { CardExamples } from './components/Card/CardExamples';
 import { DragDropCard } from './components/Card/DragDropCard';
 import DraggableCard from './components/DraggableCard/DraggableCard';
+import Calendar from './components/Calendar/Calendar';
 import './App.css';
 
 function App() {
@@ -20,7 +22,25 @@ function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <DndProvider backend={HTML5Backend}>
+        <MantineProvider
+          theme={{
+            colors: {
+              dark: [
+                '#d5d7e0',
+                '#acaebf',
+                '#8c8fa3',
+                '#666980',
+                '#4d4f66',
+                '#34354a',
+                '#2b2c3d',
+                '#1d1e30',
+                '#0c0d21',
+                '#01010a',
+              ],
+            },
+          }}
+        >
+          <DndProvider backend={HTML5Backend}>
           <Router>
             <div className={`flex min-h-screen transition-colors duration-300 font-inter ${
               theme === 'dark' ? 'bg-dark-900 text-gray-100' : 'bg-white text-gray-900'
@@ -55,11 +75,13 @@ function App() {
                   <Route path="/cards" element={<CardExamples />} />
                   <Route path="/drag-drop-cards" element={<DragDropCard />} />
                   <Route path="/table" element={<TablePage />} />
+                  <Route path="/calendar" element={<Calendar />} />
                 </Routes>
               </main>
             </div>
           </Router>
         </DndProvider>
+      </MantineProvider>
       </ThemeProvider>
     </ErrorBoundary>
   );

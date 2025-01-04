@@ -1,6 +1,5 @@
 import React, { useRef, useLayoutEffect, useState, useCallback } from 'react';
 import { useDrag } from 'react-dnd';
-import { throttle } from 'lodash';
 import Card from '../Card/Card';
 
 interface DraggableCardProps {
@@ -32,22 +31,24 @@ export const DraggableCard: React.FC<DraggableCardProps> = ({
   const elementRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x, y });
 
-  // Throttle the move callback to improve performance
-  const throttledMove = useCallback(
-    (id: string, x: number, y: number) => {
-      onMove(id, x, y);
-    },
-    [onMove]
-  );
+  const lastPosition = useRef({ x, y });
+  const isDraggingRef = useRef(false);
 
-  const throttledMoveRef = useRef(throttle(throttledMove, 16));
+  const updatePosition = useCallback(() => {
+    if (isDraggingRef.current) {
+      requestAnimationFrame(() => {
+        if (lastPosition.current.x !== position.x || 
+            lastPosition.current.y !== position.y) {
+          onMove(id, position.x, position.y);
+          lastPosition.current = position;
+        }
+      });
+    }
+  }, [id, onMove, position.x, position.y]);
 
   useLayoutEffect(() => {
-    const currentThrottle = throttledMoveRef.current;
-    return () => {
-      currentThrottle.cancel();
-    };
-  }, []);
+    updatePosition();
+  }, [updatePosition]);
 
   const [{ isDragging }, connectDrag] = useDrag<
     DragItem,
@@ -60,19 +61,23 @@ export const DraggableCard: React.FC<DraggableCardProps> = ({
       type: 'CARD',
       initialOffset: { x, y },
     },
-    collect: (monitor) => ({
+    collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
     }),
-    end: (item, monitor) => {
+    end: (item: any, monitor: any) => {
       const delta = monitor.getDifferenceFromInitialOffset();
       if (delta) {
         const newX = Math.round(item.initialOffset.x + delta.x);
         const newY = Math.round(item.initialOffset.y + delta.y);
         setPosition({ x: newX, y: newY });
-        throttledMoveRef.current(id, newX, newY);
+        onMove(id, newX, newY);
       }
     },
   });
+
+  useLayoutEffect(() => {
+    isDraggingRef.current = isDragging;
+  }, [isDragging]);
 
   // Connect drag to the element
   useLayoutEffect(() => {
@@ -83,13 +88,17 @@ export const DraggableCard: React.FC<DraggableCardProps> = ({
 
   const style: React.CSSProperties = {
     position: 'absolute',
-    left: position.x,
-    top: position.y,
-    opacity: isDragging ? 0.5 : 1,
-    cursor: 'move',
-    transform: isDragging ? 'translate3d(0, 0, 0)' : undefined,
-    willChange: isDragging ? 'transform' : undefined,
-    transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+    transform: `translate3d(${position.x}px, ${position.y}px, 0) scale(${isDragging ? 1.02 : 1})`,
+    opacity: isDragging ? 0.8 : 1,
+    cursor: 'grab',
+    willChange: 'transform',
+    transition: isDragging ? 'none' : 'transform 0.15s cubic-bezier(0.22, 1, 0.36, 1)',
+    touchAction: 'none',
+    pointerEvents: isDragging ? 'none' : 'auto',
+    zIndex: isDragging ? 1000 : 1,
+    filter: isDragging ? 'drop-shadow(0 4px 8px rgba(0,0,0,0.15))' : 'none',
+    backfaceVisibility: 'hidden',
+    transformStyle: 'preserve-3d',
   };
 
   return (

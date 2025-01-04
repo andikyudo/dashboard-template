@@ -6,15 +6,17 @@ interface CardProps {
   description: string;
   image?: string;
   onClick?: () => void;
+  className?: string;
+  children?: React.ReactNode;
 }
 
-const Card = ({ title, description, image, onClick }: CardProps) => {
+const Card = ({ title, description, image, onClick, className, children }: CardProps) => {
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden cursor-pointer transition-all hover:shadow-lg"
+      className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden cursor-pointer transition-all hover:shadow-lg ${className}`}
     >
       {image && (
         <div className="h-40 bg-gray-100 dark:bg-gray-700">

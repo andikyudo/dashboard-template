@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import TablePage from './pages/TablePage';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -53,6 +54,7 @@ function App() {
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/cards" element={<CardExamples />} />
                   <Route path="/drag-drop-cards" element={<DragDropCard />} />
+                  <Route path="/table" element={<TablePage />} />
                 </Routes>
               </main>
             </div>

@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useLayoutEffect, useState, useCallback } from 'react';
 import { useDrag } from 'react-dnd';
+import { throttle } from 'lodash';
 import Card from '../Card/Card';
 
 interface DraggableCardProps {
@@ -14,8 +15,10 @@ interface DraggableCardProps {
 interface DragItem {
   id: string;
   type: string;
-  initialX: number;
-  initialY: number;
+  initialOffset: {
+    x: number;
+    y: number;
+  };
 }
 
 export const DraggableCard: React.FC<DraggableCardProps> = ({
@@ -26,42 +29,71 @@ export const DraggableCard: React.FC<DraggableCardProps> = ({
   description,
   onMove,
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const [{ isDragging }, drag] = useDrag<
+  const elementRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({ x, y });
+
+  // Throttle the move callback to improve performance
+  const throttledMove = useCallback(
+    (id: string, x: number, y: number) => {
+      onMove(id, x, y);
+    },
+    [onMove]
+  );
+
+  const throttledMoveRef = useRef(throttle(throttledMove, 16));
+
+  useLayoutEffect(() => {
+    const currentThrottle = throttledMoveRef.current;
+    return () => {
+      currentThrottle.cancel();
+    };
+  }, []);
+
+  const [{ isDragging }, connectDrag] = useDrag<
     DragItem,
-    void,
+    unknown,
     { isDragging: boolean }
-  >(() => ({
+  >({
     type: 'CARD',
-    item: { id, type: 'CARD', initialX: x, initialY: y },
+    item: {
+      id,
+      type: 'CARD',
+      initialOffset: { x, y },
+    },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
     end: (item, monitor) => {
       const delta = monitor.getDifferenceFromInitialOffset();
-      
       if (delta) {
-        const newX = Math.round(x + delta.x);
-        const newY = Math.round(y + delta.y);
-        onMove(id, newX, newY);
+        const newX = Math.round(item.initialOffset.x + delta.x);
+        const newY = Math.round(item.initialOffset.y + delta.y);
+        setPosition({ x: newX, y: newY });
+        throttledMoveRef.current(id, newX, newY);
       }
     },
-  }), [id, x, y, onMove]);
+  });
+
+  // Connect drag to the element
+  useLayoutEffect(() => {
+    if (elementRef.current) {
+      connectDrag(elementRef.current);
+    }
+  }, [connectDrag]);
+
+  const style: React.CSSProperties = {
+    position: 'absolute',
+    left: position.x,
+    top: position.y,
+    opacity: isDragging ? 0.5 : 1,
+    cursor: 'move',
+    transform: isDragging ? 'translate3d(0, 0, 0)' : undefined,
+    willChange: isDragging ? 'transform' : undefined,
+    transition: isDragging ? 'none' : 'transform 0.1s ease-out',
+  };
 
   return (
-    <div
-      ref={ref}
-      {...drag(ref)}
-      style={{
-        position: 'absolute',
-        transform: `translate(${x}px, ${y}px)`,
-        opacity: isDragging ? 0.5 : 1,
-        cursor: 'move',
-        zIndex: isDragging ? 1000 : 1,
-        touchAction: 'none',
-      }}
-      className="transition-opacity duration-200"
-    >
+    <div ref={elementRef} style={style}>
       <Card 
         title={title} 
         description={description}

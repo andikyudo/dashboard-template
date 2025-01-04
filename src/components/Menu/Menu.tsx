@@ -36,7 +36,8 @@ const Menu = ({ isOpen }: MenuProps) => {
       icon: <FiHome className="w-5 h-5" />,
       subItems: [
         { title: 'Card Examples', icon: <FiHome className="w-4 h-4" /> },
-        { title: 'Drag Drop Cards', icon: <FiHome className="w-4 h-4" /> }
+        { title: 'Drag Drop Cards', icon: <FiHome className="w-4 h-4" /> },
+        { title: 'Table', icon: <FiHome className="w-4 h-4" /> }
       ]
     },
     { 
@@ -101,7 +102,8 @@ const Menu = ({ isOpen }: MenuProps) => {
                 <Link 
                   to={
                     subItem.title === 'Card Examples' ? '/cards' :
-                    subItem.title === 'Drag Drop Cards' ? '/drag-drop-cards' : '/'
+                    subItem.title === 'Drag Drop Cards' ? '/drag-drop-cards' :
+                    subItem.title === 'Table' ? '/table' : '/'
                   }
                   key={subItem.title}
                 >

@@ -23,18 +23,20 @@ const Sidebar = () => {
       </AnimatePresence>
 
       <motion.div
-        className="h-screen bg-gray-800 dark:bg-gray-900 text-white w-64 fixed z-50 shadow-xl"
-        animate={{ x: isOpen ? 0 : -250 }}
+        className="h-screen bg-gray-800 dark:bg-gray-900 text-white fixed z-50 shadow-xl"
+        animate={{ width: isOpen ? '16rem' : '4.5rem' }}
         transition={{ type: 'spring', stiffness: 100 }}
       >
         <div className="p-4 flex justify-between items-center border-b border-gray-700">
-          <motion.h1
+          <motion.div
             animate={{ opacity: isOpen ? 1 : 0 }}
             transition={{ duration: 0.2 }}
-            className="text-xl font-bold"
+            className="overflow-hidden"
           >
-            Dashboard
-          </motion.h1>
+            <h1 className="text-xl font-bold whitespace-nowrap">
+              Dashboard
+            </h1>
+          </motion.div>
           <button 
             onClick={() => setIsOpen(!isOpen)}
             className="p-2 hover:bg-gray-700 rounded-lg transition-all"
@@ -43,19 +45,22 @@ const Sidebar = () => {
           </button>
         </div>
         
-        <div className="p-4">
+        <div className="p-4 overflow-hidden">
           <Menu isOpen={isOpen} />
         </div>
         
         <div className="absolute bottom-0 w-full p-4 border-t border-gray-700">
           <button 
             onClick={() => setShowSettings(true)}
-            className="flex items-center gap-2 p-2 hover:bg-gray-700 rounded-lg w-full transition-all"
+            className="flex items-center p-2 hover:bg-gray-700 rounded-lg w-full transition-all"
           >
-            <FiSettings size={20} />
+            <div className="w-5 h-5 flex items-center justify-center">
+              <FiSettings size={20} className="flex-shrink-0" />
+            </div>
             <motion.span
-              animate={{ opacity: isOpen ? 1 : 0 }}
+              animate={{ opacity: isOpen ? 1 : 0, x: isOpen ? 0 : -10 }}
               transition={{ duration: 0.2 }}
+              className="whitespace-nowrap"
             >
               Settings
             </motion.span>

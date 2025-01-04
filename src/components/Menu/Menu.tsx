@@ -68,7 +68,7 @@ const Menu = ({ isOpen }: MenuProps) => {
   return (
     <motion.div
       className="space-y-1"
-      animate={{ opacity: isOpen ? 1 : 0 }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.2 }}
     >
       {menuItems.map((item) => (
@@ -82,20 +82,20 @@ const Menu = ({ isOpen }: MenuProps) => {
               {item.icon}
             </div>
             <motion.span
-              animate={{ opacity: isOpen ? 1 : 0 }}
+              animate={{ opacity: isOpen ? 1 : 0, x: isOpen ? 0 : -10 }}
               transition={{ duration: 0.2 }}
-              className="flex-1 text-left"
+              className="flex-1 text-left whitespace-nowrap"
             >
               {item.title}
             </motion.span>
           </button>
 
-          {item.subItems && openMenus[item.title] && (
+          {isOpen && item.subItems && openMenus[item.title] && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               transition={{ duration: 0.2 }}
-              className="pl-4"
+              className="pl-4 overflow-hidden"
             >
               {item.subItems.map((subItem) => (
                 <Link 

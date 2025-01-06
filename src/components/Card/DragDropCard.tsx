@@ -7,16 +7,19 @@ import {
 } from '@dnd-kit/sortable';
 import { SortableCard } from './SortableCard';
 
-export {};
-
 interface Card {
   id: string;
   title: string;
   content: string;
 }
 
-export const DragDropCard = () => {
-  const [cards, setCards] = useState<Card[]>([
+interface DragDropCardProps {
+  initialCards?: Card[];
+  onOrderChange?: (cards: Card[]) => void;
+}
+
+export const DragDropCard = ({ initialCards, onOrderChange }: DragDropCardProps) => {
+  const [cards, setCards] = useState<Card[]>(initialCards || [
     { id: '1', title: 'Task 1', content: 'Description for task 1' },
     { id: '2', title: 'Task 2', content: 'Description for task 2' },
     { id: '3', title: 'Task 3', content: 'Description for task 3' },
@@ -29,7 +32,9 @@ export const DragDropCard = () => {
       setCards((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
+        const newItems = arrayMove(items, oldIndex, newIndex);
+        onOrderChange?.(newItems);
+        return newItems;
       });
     }
   };

@@ -4,6 +4,7 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
+import './Calendar.css';
 import { Button, Modal, TextInput, ActionIcon } from '@mantine/core';
 import { useTheme } from '../../context/ThemeContext';
 import { FiTrash2 } from 'react-icons/fi';
@@ -136,7 +137,7 @@ export default function Calendar() {
   );
 
   return (
-    <div className={`h-[calc(100vh-200px)] ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
+    <div className={`h-[calc(100vh-200px)] calendar-container ${theme === 'dark' ? 'dark' : 'light'}`}>
       <DnDCalendar
         localizer={localizer}
         events={events}

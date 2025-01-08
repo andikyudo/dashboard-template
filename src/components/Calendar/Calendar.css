@@ -1,0 +1,58 @@
+.calendar-container {
+  padding: 1rem;
+}
+
+/* Dark mode styles */
+.dark-calendar {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.dark-calendar .rbc-header {
+  background-color: #2d2d2d;
+  color: #ffffff;
+}
+
+.dark-calendar .rbc-day-bg + .rbc-day-bg,
+.dark-calendar .rbc-header + .rbc-header {
+  border-color: #444;
+}
+
+.dark-calendar .rbc-month-view,
+.dark-calendar .rbc-time-view {
+  border-color: #444;
+}
+
+.dark-calendar .rbc-event {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.dark-calendar .rbc-today {
+  background-color: #333333;
+}
+
+/* Light mode styles */
+.rbc-header {
+  background-color: #f8f9fa;
+  color: #000000;
+}
+
+.rbc-day-bg + .rbc-day-bg,
+.rbc-header + .rbc-header {
+  border-color: #ddd;
+}
+
+.rbc-month-view,
+.rbc-time-view {
+  border-color: #ddd;
+}
+
+.rbc-event {
+  background-color: #3174ad;
+  color: #ffffff;
+}
+
+.rbc-today {
+  background-color: #eaf6ff;
+}

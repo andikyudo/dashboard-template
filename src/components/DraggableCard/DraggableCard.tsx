@@ -44,7 +44,7 @@ export const DraggableCard: React.FC<DraggableCardProps> = ({
         }
       });
     }
-  }, [id, onMove, position.x, position.y]);
+  }, [id, onMove, position]);
 
   useLayoutEffect(() => {
     updatePosition();

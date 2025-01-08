@@ -6,7 +6,7 @@ const Settings = () => {
 
   return (
     <div className={`p-6 w-[400px] max-w-full font-sans ${
-      theme === 'dark' ? 'bg-dark-800 text-gray-100' : 'bg-white text-gray-900'
+      theme === 'dark' ? 'bg-[#121212] text-[#fbd59b]' : 'bg-white text-gray-900'
     }`}>
       <h2 className="text-xl font-bold mb-6">Settings</h2>
       
@@ -45,7 +45,7 @@ const Settings = () => {
           <select
             id="language"
             className={`p-2 rounded border ${
-              theme === 'dark' ? 'bg-dark-700 border-dark-600' : 'bg-gray-50 border-gray-300'
+              theme === 'dark' ? 'bg-[#1e1e1e] border-[#1e1e1e]' : 'bg-gray-50 border-gray-300'
             } text-sm`}
           >
             <option value="en">English</option>

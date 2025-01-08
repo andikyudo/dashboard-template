@@ -167,11 +167,7 @@ const Table: React.FC<TableProps> = ({ data }) => {
                 className="flex items-center cursor-pointer"
                 onClick={() => toggleTask(item.id)}
               >
-                <div className={`text-sm font-medium ${
-                  theme === 'light'
-                    ? 'text-purple-900 group-hover:text-purple-700'
-                    : 'text-[#fddeae] group-hover:text-[#f9cd87]'
-                } transition-colors duration-200`}>
+                <div className="text-sm font-medium text-purple-900 dark:text-[#fddeae] group-hover:text-purple-700 dark:group-hover:text-[#f9cd87] transition-colors duration-200">
                   {item.taskName}
                 </div>
                 <div className="ml-2 text-purple-500">
@@ -189,18 +185,10 @@ const Table: React.FC<TableProps> = ({ data }) => {
               )}
             </td>
             <td className="px-6 py-4 transition-all duration-200">
-                <div className={`text-sm ${
-                  theme === 'light' 
-                    ? 'text-purple-900' 
-                    : 'text-[#fbd59b]'
-                }`}>{item.description}</div>
+                <div className="text-sm text-purple-900 dark:text-[#fbd59b]">{item.description}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className={`text-sm ${
-                  theme === 'light' 
-                    ? 'text-purple-900' 
-                    : 'text-[#fbd59b]'
-                }`}>{item.estimation}</div>
+                <div className="text-sm text-purple-900 dark:text-[#fbd59b]">{item.estimation}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800 hover:bg-purple-200 transition-colors duration-200">

@@ -23,7 +23,7 @@ const Sidebar = () => {
       </AnimatePresence>
 
       <motion.div
-        className="h-screen bg-gray-800 dark:bg-gray-900 text-white fixed z-50 shadow-xl"
+        className="h-screen bg-gray-800 dark:bg-[#121212] text-white dark:text-[#fbd59b] fixed z-50 shadow-xl"
         animate={{ width: isOpen ? '16rem' : '4.5rem' }}
         transition={{ type: 'spring', stiffness: 100 }}
       >
@@ -82,7 +82,7 @@ const Sidebar = () => {
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 50, opacity: 0 }}
-              className="absolute bottom-0 w-full bg-white dark:bg-gray-800 rounded-t-lg p-6"
+              className="absolute bottom-0 w-full bg-white dark:bg-[#121212] rounded-t-lg p-6"
               onClick={(e) => e.stopPropagation()}
             >
               <Settings />

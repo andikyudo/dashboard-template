@@ -72,7 +72,7 @@ const Menu = ({ isOpen }: MenuProps) => {
         <motion.div key={item.title}>
           <Link 
             to={item.title === 'Calendar' ? '/calendar' : '#'}
-            className="w-full p-2 hover:bg-gray-700 dark:hover:bg-gray-800 flex items-center gap-3 rounded-lg transition-all"
+            className="w-full p-2 hover:bg-gray-700 dark:hover:bg-[#1e1e1e] dark:text-[#fbd59b] flex items-center gap-3 rounded-lg transition-all"
           >
             <div className="text-gray-400">
               {item.icon}
@@ -103,7 +103,7 @@ const Menu = ({ isOpen }: MenuProps) => {
                   key={subItem.title}
                 >
                   <motion.div 
-                    className="p-2 hover:bg-gray-700 dark:hover:bg-gray-800 flex items-center gap-3 rounded-lg"
+                    className="p-2 hover:bg-gray-700 dark:hover:bg-[#1e1e1e] dark:text-[#fbd59b] flex items-center gap-3 rounded-lg"
                   >
                     <div className="text-gray-400">
                       {subItem.icon}
